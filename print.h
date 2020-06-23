@@ -45,7 +45,7 @@ void _print_unknown(unsigned long long int x){printf("%llX", x);} //compiler iss
 
 //Now, to make the function variadic.
 //"You are without doubt the worst variadicity I've ever implemented." "But you have implemented me."
-#define _print_each(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, ...) do{ /*the ol' do-while(0) trick*/ _print_unit(_1); _print_unit(_2); _print_unit(_3); _print_unit(_4); _print_unit(_5); _print_unit(_6); _print_unit(_7); _print_unit(_8); _print_unit(_9); _print_unit(_10); _print_unit(_11); _print_unit(_12); _print_unit(_13); _print_unit(_14); _print_unit(_15); _print_unit(_16); } while(0)
+#define _print_each(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _bound, ...) do{ /*the ol' do-while(0) trick*/ _print_unit(_1); _print_unit(_2); _print_unit(_3); _print_unit(_4); _print_unit(_5); _print_unit(_6); _print_unit(_7); _print_unit(_8); _print_unit(_9); _print_unit(_10); _print_unit(_11); _print_unit(_12); _print_unit(_13); _print_unit(_14); _print_unit(_15); _print_unit(_16); if(_bound!=""){_print_unit(" etc\n");} } while(0)
 #define print(...) _print_each(__VA_ARGS__, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
 
 #endif
