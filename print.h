@@ -27,7 +27,7 @@ void _print_uint(unsigned long long int u){printf("%llu", u);}
 void _print_float(long double f){printf("%LG", f);} //L: Long float, G: automatically chooses whether to use scientific notation
 void _print_string(char *s){printf("%s", s);}
 void _print_pointer(void *p){printf("%p", p);}
-void _print_dont_print(_dont_print x){} 
+void _print_dont_print(){} 
 void _print_unknown(unsigned long long int x){printf("%llX", x);} //compiler issues warning in this conversion
 
 #define _print_unit(unit) _Generic( (unit), \
