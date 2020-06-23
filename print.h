@@ -3,9 +3,10 @@ Finally, a print function!
 Simply #include "print.h" and call print on whatever you want, up to 16 arguments.
 (16 is arbitrary, and the number of arguments print can take can be expanded straightfowardly.)
 (You will recieve a, likely inscrutable, compiler error if you exceed the limit, don't worry.)
+Fully standard under C11 and later.
 Can print the same types of data as printf.
-In fact, the implementation of the macro uses printf, so this is sort of just a type-safer way of calling that.
-(except in-line character literals, because those are by standard promoted to ints on creation. Sorry, I don't make the rules.)
+(In fact, the implementation of the macro uses printf, so this is sort of just a safer and more convenient way of calling printf.)
+(However, we can't inline character literals, because those are by standard promoted to ints on creation. Sorry, I don't make the rules. Use inline string literals instead.)
 Arguments are evalutated only once in the expanded macro, so stuff like print(i++) is safe.
 */
 
