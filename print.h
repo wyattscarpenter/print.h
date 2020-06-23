@@ -2,9 +2,9 @@
 Finally, a print function!
 Simply #include "print.h" and call print on whatever you want, 1 to 16 arguments.
 (16 is arbitrary, and the number of arguments print can take can be expanded straightfowardly.)
-(You will recieve no warning if you exceed the limit, further args simply will not print)
-Fully standard-compliant under C11 and later.
-Can print the same types of data as printf.
+(You will recieve a compile-time warning if you exceed the limit, don't worry)
+Fully standard-compliant, C11 and later.
+Can print the same types of data as printf, and a few more! Add your own!
 (In fact, the implementation of the macro uses printf, so this is sort of just a safer and more convenient way of calling printf.)
 (However, we can't print inline character literals, because those are by standard promoted to ints on creation, or something.
  Sorry, I don't make the rules. Use inline string literals instead.)
@@ -17,9 +17,9 @@ Arguments are evalutated only once in the expanded macro, so stuff like print(i+
 #include <stdio.h>
 
 typedef struct {char nothing;} _dont_print;
-//typedef struct {char nothing;} custom_type; //even though this type is identical to _dont_print, it is still printed properly
+//typedef struct {char nothing;} custom_type; //even though this type is structurally identical to _dont_print, it is still printed properly
 
-//We rely on promotion rules I don't really understand.
+//We rely on type promotion rules I frankly don't really understand.
 //TODO: could replace printf. But is it already optimized out by the compiler?
 void _print_int(long long int i){printf("%lld", i);}
 void _print_uint(unsigned long long int u){printf("%llu", u);}
