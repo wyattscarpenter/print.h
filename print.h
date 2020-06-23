@@ -1,6 +1,6 @@
 /* print.h
 Finally, a print function!
-Simply #include "print.h" and call print on whatever you want, up to 16 arguments.
+Simply #include "print.h" and call print on whatever you want, 1 to 16 arguments.
 (16 is arbitrary, and the number of arguments print can take can be expanded straightfowardly.)
 (You will recieve no warning if you exceed the limit, further args simply will not print)
 Fully standard-compliant under C11 and later.
