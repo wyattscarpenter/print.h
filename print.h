@@ -3,22 +3,30 @@ Finally, a print function!
 Simply #include "print.h" and call print on whatever you want, up to 16 arguments.
 Can print the same types of data as printf.
 (except in-line character literals, because those are by standard promoted to ints on creation. Sorry, I don't make the rules.)
+Your arguments should be evalutated only once in the expanded macro, so stuff like print(i++) should be safe.
 */
 
 #include <stdio.h>
 
-//TODO: since this currently uses printf, I think the compiler does the replacement with generic in first, then warns about formatting (ie "warning: format specifies type 'long long' but the argument has type 'char' [-Wformat]"), then choses the right option. Very odd. Happens in both gcc and clang. Well, better stop using printf eventually.
+//we count on promotion rules I don't understand
+void _print_int(long long int i){printf("%lld", i);}
+void _print_uint(unsigned long long int u){printf("%llu", u);}
+void _print_float(double f){printf("%f", f);}
+void _print_string(char *s){printf("%s", s);}
+void _print_pointer(void *p){printf("%p", p);}
+void _print_unknown(unsigned int x){printf("%x", x);}
+
 #define _print_unit(unit) _Generic( (unit), \
-  char: printf("%c", unit), \
-  int: printf("%d", unit), \
-  long int: printf("%ld", unit), \
-  long long int: printf("%lld", unit), \
-  float: printf("%f", unit), \
-  double: printf("%f", unit), \
-  char *: printf("%s", unit), \
-  void *: ("%p", unit), \
-  unsigned int: printf("%ud", unit), \
-  unsigned long int: printf("%uld", unit), \
-  unsigned long long int: printf("%ulld", unit), \
-  default: printf("%x", unit) \
-)
+  char: putchar, \
+  int: _print_int, \
+  long int: _print_int, \
+  long long int: _print_int, \
+  float: _print_float, \
+  double:  _print_float, \
+  char *: _print_string, \
+  void *: _print_pointer, \
+  unsigned int: _print_uint, \
+  unsigned long int: _print_uint, \
+  unsigned long long int: _print_uint, \
+  default: _print_unknown \
+) (unit)
