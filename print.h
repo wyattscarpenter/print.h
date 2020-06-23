@@ -2,7 +2,7 @@
 Finally, a print function!
 Simply #include "print.h" and call print on whatever you want, up to 16 arguments.
 (16 is arbitrary, and the number of arguments print can take can be expanded straightfowardly.)
-(You will recieve a, likely inscrutable, compiler error if you exceed the limit, don't worry.)
+(You will recieve no warning if you exceed the limit, further args simply will not print)
 Fully standard-compliant under C11 and later.
 Can print the same types of data as printf.
 (In fact, the implementation of the macro uses printf, so this is sort of just a safer and more convenient way of calling printf.)
@@ -20,7 +20,7 @@ Arguments are evalutated only once in the expanded macro, so stuff like print(i+
 //TODO: could replace printf. But is it already optimized out by the compiler?
 void _print_int(long long int i){printf("%lld", i);}
 void _print_uint(unsigned long long int u){printf("%llu", u);}
-void _print_float(double f){printf("%f", f);}
+void _print_float(long double f){printf("%LG", f);} //L: Long float, G: automatically chooses whether to use scientific notation
 void _print_string(char *s){printf("%s", s);}
 void _print_pointer(void *p){printf("%p", p);}
 void _print_unknown(unsigned long long int x){printf("%llX", x);} //compiler issues warning in this conversion
@@ -32,8 +32,11 @@ void _print_unknown(unsigned long long int x){printf("%llX", x);} //compiler iss
   long long int: _print_int, \
   float: _print_float, \
   double:  _print_float, \
+  long double:  _print_float, \
   char *: _print_string, \
   void *: _print_pointer, \
+  int *: _print_pointer, \
+  int **: _print_pointer, \
   unsigned int: _print_uint, \
   unsigned long int: _print_uint, \
   unsigned long long int: _print_uint, \
