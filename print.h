@@ -3,7 +3,7 @@ Finally, a print function!
 Simply #include "print.h" and call print on whatever you want, up to 16 arguments.
 (16 is arbitrary, and the number of arguments print can take can be expanded straightfowardly.)
 (You will recieve a, likely inscrutable, compiler error if you exceed the limit, don't worry.)
-Fully standard under C11 and later.
+Fully standard-compliant under C11 and later.
 Can print the same types of data as printf.
 (In fact, the implementation of the macro uses printf, so this is sort of just a safer and more convenient way of calling printf.)
 (However, we can't print inline character literals, because those are by standard promoted to ints on creation, or something.
@@ -41,29 +41,8 @@ void _print_unknown(unsigned long long int x){printf("%llX", x);} //compiler iss
 ) (unit)
 
 //Now, to make the function variadic.
-//Make a FOR_EACH macro for up to 16 arguments:
-#define _FE_0(WHAT)
-#define _FE_1(WHAT, X) WHAT(X); 
-#define _FE_2(WHAT, X, ...) WHAT(X); _FE_1(WHAT, __VA_ARGS__)
-#define _FE_3(WHAT, X, ...) WHAT(X); _FE_2(WHAT, __VA_ARGS__)
-#define _FE_4(WHAT, X, ...) WHAT(X); _FE_3(WHAT, __VA_ARGS__)
-#define _FE_5(WHAT, X, ...) WHAT(X); _FE_4(WHAT, __VA_ARGS__)
-#define _FE_6(WHAT, X, ...) WHAT(X); _FE_5(WHAT, __VA_ARGS__)
-#define _FE_7(WHAT, X, ...) WHAT(X); _FE_6(WHAT, __VA_ARGS__)
-#define _FE_8(WHAT, X, ...) WHAT(X); _FE_7(WHAT, __VA_ARGS__)
-#define _FE_9(WHAT, X, ...) WHAT(X); _FE_8(WHAT, __VA_ARGS__)
-#define _FE_10(WHAT, X, ...) WHAT(X); _FE_9(WHAT, __VA_ARGS__)
-#define _FE_11(WHAT, X, ...) WHAT(X); _FE_10(WHAT, __VA_ARGS__)
-#define _FE_12(WHAT, X, ...) WHAT(X); _FE_11(WHAT, __VA_ARGS__)
-#define _FE_13(WHAT, X, ...) WHAT(X); _FE_12(WHAT, __VA_ARGS__)
-#define _FE_14(WHAT, X, ...) WHAT(X); _FE_13(WHAT, __VA_ARGS__)
-#define _FE_15(WHAT, X, ...) WHAT(X); _FE_14(WHAT, __VA_ARGS__)
-#define _FE_16(WHAT, X, ...) WHAT(X); _FE_15(WHAT, __VA_ARGS__)
-
-//This is magic and I understand it.
-//credit to https://stackoverflow.com/a/11994395 and the answers that answer is based on
-#define _GET_MACRO(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, NAME, ...) NAME 
-#define _FOR_EACH(action,...) _GET_MACRO(_0,__VA_ARGS__, _FE_16, _FE_15, _FE_14, _FE_13, _FE_12, _FE_11, _FE_10, _FE_9, _FE_8, _FE_7, _FE_6, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1, _FE_0)(action,__VA_ARGS__)
-#define print(...) _FOR_EACH(_print_unit, __VA_ARGS__)
+//"You are without doubt the worst variadicity I've ever implemented." "But you have implemented me."
+#define _print_each(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, ...) do{ /*the ol' do-while(0) trick*/ _print_unit(_1); _print_unit(_2); _print_unit(_3); _print_unit(_4); _print_unit(_5); _print_unit(_6); _print_unit(_7); _print_unit(_8); _print_unit(_9); _print_unit(_10); _print_unit(_11); _print_unit(_12); _print_unit(_13); _print_unit(_14); _print_unit(_15); _print_unit(_16); } while(0)
+#define print(...) _print_each(__VA_ARGS__, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
 
 #endif

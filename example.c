@@ -30,5 +30,6 @@ int main(void) {
   _print_unit(ints); //warns for unsupported type
   _print_unit("\n");
   int i = 0;
+  print("h");
   print("Hello friends. I have not tested thoroughly. I only tested ", 42, " cases.\nI think you will agree this is not enough. ", i++, " ", i, " ", ' ', (char)' ', (void *)2913870987, " ", 0xadae248b, " ", (void *)0, -16);
 }
