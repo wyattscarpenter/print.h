@@ -11,6 +11,9 @@ Can print the same types of data as printf.
 Arguments are evalutated only once in the expanded macro, so stuff like print(i++) is safe.
 */
 
+#ifndef _PRINT_H
+#define _PRINT_H
+
 #include <stdio.h>
 
 //We rely on promotion rules I don't really understand.
@@ -62,3 +65,5 @@ void _print_unknown(unsigned long long int x){printf("%llX", x);} //compiler iss
 #define _GET_MACRO(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, NAME, ...) NAME 
 #define _FOR_EACH(action,...) _GET_MACRO(_0,__VA_ARGS__, _FE_16, _FE_15, _FE_14, _FE_13, _FE_12, _FE_11, _FE_10, _FE_9, _FE_8, _FE_7, _FE_6, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1, _FE_0)(action,__VA_ARGS__)
 #define print(...) _FOR_EACH(_print_unit, __VA_ARGS__)
+
+#endif
