@@ -16,6 +16,10 @@ Arguments are evalutated only once in the expanded macro, so stuff like print(i+
 
 #include <stdio.h>
 
+typedef struct {char nothing;} _dont_print;
+_dont_print _placeholder;
+
+
 //We rely on promotion rules I don't really understand.
 //TODO: could replace printf. But is it already optimized out by the compiler?
 void _print_int(long long int i){printf("%lld", i);}
@@ -23,6 +27,7 @@ void _print_uint(unsigned long long int u){printf("%llu", u);}
 void _print_float(long double f){printf("%LG", f);} //L: Long float, G: automatically chooses whether to use scientific notation
 void _print_string(char *s){printf("%s", s);}
 void _print_pointer(void *p){printf("%p", p);}
+void _print_dont_print(_dont_print x){} 
 void _print_unknown(unsigned long long int x){printf("%llX", x);} //compiler issues warning in this conversion
 
 #define _print_unit(unit) _Generic( (unit), \
@@ -40,12 +45,15 @@ void _print_unknown(unsigned long long int x){printf("%llX", x);} //compiler iss
   unsigned int: _print_uint, \
   unsigned long int: _print_uint, \
   unsigned long long int: _print_uint, \
+  _dont_print: _print_dont_print, \
   default: _print_unknown \
 ) (unit)
 
+//#define _halt_print_and_catch_fire(i) _Static_assert(i, "too many") //hmm TODO: check bounds at compile time
+
 //Now, to make the function variadic.
 //"You are without doubt the worst variadicity I've ever implemented." "But you have implemented me."
-#define _print_each(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _bound, ...) do{ /*the ol' do-while(0) trick*/ _print_unit(_1); _print_unit(_2); _print_unit(_3); _print_unit(_4); _print_unit(_5); _print_unit(_6); _print_unit(_7); _print_unit(_8); _print_unit(_9); _print_unit(_10); _print_unit(_11); _print_unit(_12); _print_unit(_13); _print_unit(_14); _print_unit(_15); _print_unit(_16); if(_bound!=""){_print_unit(" etc\n");} } while(0)
-#define print(...) _print_each(__VA_ARGS__, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
+#define _print_each(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _bound, ...) do{ /*the ol' do-while(0) trick*/ _print_unit(_1); _print_unit(_2); _print_unit(_3); _print_unit(_4); _print_unit(_5); _print_unit(_6); _print_unit(_7); _print_unit(_8); _print_unit(_9); _print_unit(_10); _print_unit(_11); _print_unit(_12); _print_unit(_13); _print_unit(_14); _print_unit(_15); _print_unit(_16); _print_unit(_Generic((_bound), _dont_print: "", default: " etc\n" )); } while(0)
+#define print(...) _print_each(__VA_ARGS__, _placeholder, _placeholder, _placeholder, _placeholder, _placeholder, _placeholder, _placeholder, _placeholder, _placeholder, _placeholder, _placeholder, _placeholder, _placeholder, _placeholder, _placeholder, _placeholder)
 
 #endif
