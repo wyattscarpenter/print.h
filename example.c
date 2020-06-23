@@ -30,6 +30,7 @@ int main(void) {
   _print_unit(ints); //just a pointer... can't razzmatazz the compiler into convincing itself it knows the size. or can I? TODO
   int *ip = ints;
   print("\n", ip, " ", *ip, " ", &ip, "\n");
+  //print((custom_type){'c'}); //printing custom types also works, if you modify print.h to include them
   //print(); //produces inscrutible error at compile time from the internals of the macro
   //print("\n", 1, " ",  2, " ",  3, " ",  4, " ",  5, " ",  6, " ",  7, " ",  8, " ",  9, " ",  10, " ",  11, " ",  12, "\n"); //triggers static assert by being oversize.
   int i = 0;
