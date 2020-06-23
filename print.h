@@ -47,11 +47,9 @@ void _print_unknown(unsigned long long int x){printf("%llX", x);} //compiler iss
   default: _print_unknown \
 ) (unit)
 
-//#define _halt_print_and_catch_fire(i) _Static_assert(i, "too many") //hmm TODO: check bounds at compile time
-
 //Now, to make the function variadic.
 //"You are without doubt the worst variadicity I've ever implemented." "But you have implemented me."
 #define _print_each(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _bound, ...) do{ /*the ol' do-while(0) trick*/ _print_unit(_1); _print_unit(_2); _print_unit(_3); _print_unit(_4); _print_unit(_5); _print_unit(_6); _print_unit(_7); _print_unit(_8); _print_unit(_9); _print_unit(_10); _print_unit(_11); _print_unit(_12); _print_unit(_13); _print_unit(_14); _print_unit(_15); _print_unit(_16); _Static_assert(_Generic((_bound), _dont_print: 1, default: 0 ), "Too many arguments supplied to print. Please do not do that, or simply edit the source code to expand the function."); } while(0)
-#define print(...) _print_each(__VA_ARGS__, (_dont_print){0}, (_dont_print){0}, (_dont_print){0}, (_dont_print){0}, (_dont_print){0}, (_dont_print){0}, (_dont_print){0}, (_dont_print){0}, (_dont_print){0}, (_dont_print){0}, (_dont_print){0}, (_dont_print){0}, (_dont_print){0}, (_dont_print){0}, (_dont_print){0}, (_dont_print){0}, (_dont_print){0}) //the (_dont_print){0}s are placeholders that are known by type to be ignored
+#define print(...) _print_each(__VA_ARGS__, (_dont_print){1}, (_dont_print){2}, (_dont_print){3}, (_dont_print){4}, (_dont_print){5}, (_dont_print){6}, (_dont_print){7}, (_dont_print){8}, (_dont_print){9}, (_dont_print){10}, (_dont_print){11}, (_dont_print){12}, (_dont_print){13}, (_dont_print){14}, (_dont_print){15}, (_dont_print){16}, (_dont_print){17}) //the (_dont_print){x}s are arbitrary placeholders that are known by type to be ignored
 
 #endif
