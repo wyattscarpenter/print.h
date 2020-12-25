@@ -8,7 +8,7 @@
   In fact, the implementation of the macro uses printf, so this is sort of just a safer and more convenient way of calling printf.
   However, we can't print inline character literals, because those are by standard promoted to ints on creation, or something.
   Sorry, I don't make the rules. Use inline string literals instead.
-  Arguments are evalutated only once in the expanded macro, so stuff like print(i++) is safe.
+  Arguments are evalutated only once at run time in the expanded macro, so stuff like print(i++) is safe.
   Only a handful of symbols are introduced into the namespace, most of them printing functions.
   I release this code into the public domain under CC0.
 */
@@ -18,22 +18,39 @@
 
 #include <stdio.h>
 
-typedef struct {char nothing;} _dont_print;
-//typedef struct {char nothing;} custom_type; //even though this type is structurally identical to _dont_print, it is still printed properly
+typedef struct {unsigned char nothing;} _dont_print;
+//typedef struct {unsigned char nothing;} custom_type; //even though this type is structurally identical to _dont_print, it is still printed properly
 
 //We rely on type promotion rules I frankly don't really understand.
-//TODO: could replace printf. But is it already optimized out by the compiler?
-void _print_int(long long int i){printf("%lld", i);}
-void _print_uint(unsigned long long int u){printf("%llu", u);}
-void _print_float(long double f){printf("%LG", f);} //L: Long float, G: automatically chooses whether to use scientific notation
-void _print_string(char *s){printf("%s", s);}
-void _print_pointer(void *p){printf("%p", p);}
+//could replace printf. But this way the code is more likely to be correct. Also, is it already optimized out by the compiler?
+void _print_char(char c, int size){printf("%c", c);}
+void _print_int(long long int i, int size){printf("%lld", i);}
+void _print_uint(unsigned long long int u, int size){printf("%llu", u);}
+void _print_float(long double f, int size){printf("%LG", f);} //L: Long float, G: automatically chooses whether to use scientific notation
+void _print_string(char *s, int size){printf("%s", s);}
+void _print_pointer(void *p, int size){printf("%p", p);}
+void _print_int_pointer(int *p, int size){
+  if(size == sizeof(p)){
+    _print_pointer(p, sizeof(p));
+  } else {
+    printf("{");
+    if(size >= sizeof(*p)){
+      printf("%d", *p); //this is complicated a bit by the fact that we don't want a trailing , at the end of our array printout.
+      for(int i = 1; i < size/sizeof(*p); i++){
+        printf(", %d", p[i]);
+      }
+    }
+    printf("}");
+  }
+}
+void _print_2d_int_pointer(void *p, int size){_print_int_pointer((int*)p, size);} //ironic that I have to take a void pointer here to erase the type info that I can't use. So close, yet so far.
+//An alternative would be making n of these functions (dispatching to int (*)[n] in the _Generic), which isn't very good.
 void _print_dont_print(){} 
 //void _print_custom(custom_type c){putchar(c.nothing);} //works fine
-void _print_unknown(unsigned long long int x){printf("%llX", x);} //compiler issues warning in this conversion
+void _print_unknown(unsigned long long int x, int size){printf("%llX", x);} //compiler issues warning in this conversion
 
 #define _print_unit(unit) _Generic( (unit), \
-  char: putchar, \
+  char: _print_char, \
   int: _print_int, \
   long int: _print_int, \
   long long int: _print_int, \
@@ -42,15 +59,16 @@ void _print_unknown(unsigned long long int x){printf("%llX", x);} //compiler iss
   long double:  _print_float, \
   char *: _print_string, \
   void *: _print_pointer, \
-  int *: _print_pointer, \
+  int *: _print_int_pointer, \
   int **: _print_pointer, \
+  int (*)[]: _print_2d_int_pointer, \
   unsigned int: _print_uint, \
   unsigned long int: _print_uint, \
   unsigned long long int: _print_uint, \
   _dont_print: _print_dont_print, \
   /*custom_type: _print_custom, //you can add your types like this */ \
   default: _print_unknown \
-) (unit)
+) (unit, sizeof(unit))
 
 //Now, to make the function variadic.
 //"You are without doubt the worst variadicity I've ever implemented." "But you have implemented me."
