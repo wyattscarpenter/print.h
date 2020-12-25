@@ -45,7 +45,7 @@ void _print_int_pointer(int *p, int size){
 }
 void _print_2d_int_pointer(void *p, int size){_print_int_pointer((int*)p, size);} //ironic that I have to take a void pointer here to erase the type info that I can't use. So close, yet so far.
 //An alternative would be making n of these functions (dispatching to int (*)[n] in the _Generic), which isn't very good.
-void _print_dont_print(){} 
+void _print_dont_print(_dont_print dont, int size){} //could also use ... instead of int size if we need to throw out a variable number of arguments in the future
 //void _print_custom(custom_type c){putchar(c.nothing);} //works fine
 void _print_unknown(unsigned long long int x, int size){printf("%llX", x);} //compiler issues warning in this conversion
 
