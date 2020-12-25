@@ -32,8 +32,9 @@ int main(void) {
   print("\n", ip, " ", *ip, " ", &ip, "\n");
   //print((custom_type){'c'}); //printing custom types also works, if you modify print.h to include them
   //print(); //produces inscrutible error at compile time from the internals of the macro
-  //print("\n", 1, " ",  2, " ",  3, " ",  4, " ",  5, " ",  6, " ",  7, " ",  8, " ",  9, " ",  10, " ",  11, " ",  12, "\n"); //triggers static assert by being oversize.
+  print("\nmaxsize print. unit count: 1, ", "2 ", "3 ", "4 ", "5 ", "6 ", "7 ", "8 ", "9 ", "10 ", "11 ", "12 ", "13 ", "14 ", "15 ", "16 ", "17 ", "18 ", "19 ", "20 ", "21 ", "22 ", "23 ", "24 ", "25 ", "26 ", "27 ", "28 ", "29 ", "30 ", "31 ", "32\n");
+  //print("\noversize print. unit count: 1, ", "2 ", "3 ", "4 ", "5 ", "6 ", "7 ", "8 ", "9 ", "10 ", "11 ", "12 ", "13 ", "14 ", "15 ", "16 ", "17 ", "18 ", "19 ", "20 ", "21 ", "22 ", "23 ", "24 ", "25 ", "26 ", "27 ", "28 ", "29 ", "30 ", "31 ", "32 ", "33\n"); //triggers static assert by being oversize.
   int i = 0;
   print("h");
-  print("Hello friends. I have not tested thoroughly. I only tested ", 42, " cases.\nI think you will agree this is not enough. ", i++, " ", i, " ", ' ', (char)' ', (void *)2913870987, " ", 0xadae248b, " ", (void *)0, -16);
+  print("Hello friends. I have not tested thoroughly. I only tested ", 42, " cases.\nI think you will agree this is not enough. ", i++, " ", i, " ", ' ', (char)' ', (void *)2913870987, " ", 0xadae248b, " ", (void *)0, -16, " ", 1234.5, " ", 23948750293485702.0);
 }
