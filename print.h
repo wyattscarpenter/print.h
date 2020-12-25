@@ -47,7 +47,6 @@ void _print_2d_int_pointer(void *p, int size){_print_int_pointer((int*)p, size);
 //An alternative would be making n of these functions (dispatching to int (*)[n] in the _Generic), which isn't very good.
 void _print_dont_print(_dont_print dont, int size){} //could also use ... instead of int size if we need to throw out a variable number of arguments in the future
 //void _print_custom(custom_type c){putchar(c.nothing);} //works fine
-void _print_unknown(unsigned long long int x, int size){printf("%llX", x);} //compiler issues warning in this conversion
 
 #define _print_unit(unit) _Generic( (unit), \
   char: _print_char, \
@@ -65,9 +64,8 @@ void _print_unknown(unsigned long long int x, int size){printf("%llX", x);} //co
   unsigned int: _print_uint, \
   unsigned long int: _print_uint, \
   unsigned long long int: _print_uint, \
-  _dont_print: _print_dont_print, \
+  _dont_print: _print_dont_print \
   /*custom_type: _print_custom, //you can add your types like this */ \
-  default: _print_unknown \
 ) (unit, sizeof(unit))
 
 //Now, to make the function variadic.
