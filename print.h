@@ -11,6 +11,7 @@
   Sorry, I don't make the rules. Use inline string literals instead.
   Arguments are evaluated only once at run time in the expanded macro, so stuff like print(i++) is safe.
   Only a handful of symbols are introduced into the namespace, most of them printing functions.
+  print cannot be used as an expression, only as a statement (it has no return value), and cannot take 0 arguments.
   This "header" file currently includes implementations, as I'm not quite sure how I want to architect it more properly.
   This header file currently #includes stdio.h, so don't bother double-including stdio.h.
   I release this code into the public domain under CC0.

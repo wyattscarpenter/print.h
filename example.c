@@ -6,8 +6,12 @@ int main(void) {
   int ints[] = {123, 456, 789};
   char nl = '\n';
   int * pointer_to_ints = ints;
+  print((void *)ints, "\n");
+  //external_function();
   print("ints: ", ints, " address of ints: ", &ints, " pointer_to_ints: ", pointer_to_ints, " address of pointer_to_ints: ", &pointer_to_ints, " are they equal? ", (void *)ints == (void *)&ints, " ", (void *)pointer_to_ints==(void *)&pointer_to_ints, "\n");
-  //print((void *)ints);
+  //print(); //this is not allowed, and the error message is currently mysterious
+  print(""); //this is fine though
+  //print("hello") //this (missing semicolon) is not allowed. Were you raised in a barn? The error you get is slightly mysterious though, sorry.
   _print_unit(a);
   _print_unit(nl);
   _print_unit('\n');
@@ -50,4 +54,5 @@ int main(void) {
   int i = 0;
   print("h");
   print("Hello friends. I have not tested thoroughly. I only tested ", 42, " cases.\nI think you will agree this is not enough. ", i++, " ", i, " ", ' ', (char)' ', (void *)2913870987, " ", 0xadae248b, " ", (void *)0, -16, " ", 1234.5, " ", 23948750293485702.0, "\n");
+  //return print("bye"); //this is not allowed, print gives no return value, and the error message is currently mysterious
 }
