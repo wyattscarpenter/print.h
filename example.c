@@ -12,6 +12,7 @@ int main(void) {
   //print(); //this is not allowed, and the error message is currently mysterious
   print(""); //this is fine though
   //print("hello") //this (missing semicolon) is not allowed. Were you raised in a barn? The error you get is slightly mysterious though, sorry.
+  labelled_print(ints, pointer_to_ints, "\n");
   _print_unit(a);
   _print_unit(nl);
   _print_unit('\n');

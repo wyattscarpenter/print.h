@@ -3,6 +3,7 @@
   Simply #include "print.h" and call print on whatever you want, 1 to 32 arguments.
   32 is arbitrary, and the number of arguments print can take can be expanded straightforwardly.
   You will receive a compile-time warning if you exceed the limit, don't worry.
+  labelled_print is like print, but will also print out the names of the variables being printed, convenient for debugging.
   Written in and for pure C.
   Can print the same types of data as printf, and a few more! And you can add your own!
   In fact, the implementation of the macro uses printf, so this is sort of just a safer and more convenient way of calling printf.
@@ -75,6 +76,21 @@ void _print_dont_print(_dont_print dont, int size){} //could also use ... instea
 //Now, to make the function variadic.
 //"You are without doubt the worst variadicity I've ever implemented." "But you have implemented me."
 #define _print_each(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _boundary_sentinel, ...) do{ /*the ol' do-while(0) trick*/ _print_unit(_1); _print_unit(_2); _print_unit(_3); _print_unit(_4); _print_unit(_5); _print_unit(_6); _print_unit(_7); _print_unit(_8); _print_unit(_9); _print_unit(_10); _print_unit(_11); _print_unit(_12); _print_unit(_13); _print_unit(_14); _print_unit(_15); _print_unit(_16); _print_unit(_17); _print_unit(_18); _print_unit(_19); _print_unit(_20); _print_unit(_21); _print_unit(_22); _print_unit(_23); _print_unit(_24); _print_unit(_25); _print_unit(_26); _print_unit(_27); _print_unit(_28); _print_unit(_29); _print_unit(_30); _print_unit(_31); _print_unit(_32); _Static_assert(_Generic((_boundary_sentinel), _dont_print: 1, default: 0 ), "Too many arguments supplied to print. Please do not do that, or simply edit the source code to expand the function."); } while(0)
+
 #define print(...) _print_each(__VA_ARGS__, (_dont_print){1}, (_dont_print){2}, (_dont_print){3}, (_dont_print){4}, (_dont_print){5}, (_dont_print){6}, (_dont_print){7}, (_dont_print){8}, (_dont_print){9}, (_dont_print){10}, (_dont_print){11}, (_dont_print){12}, (_dont_print){13}, (_dont_print){14}, (_dont_print){15}, (_dont_print){16}, (_dont_print){17}, (_dont_print){18}, (_dont_print){19}, (_dont_print){20}, (_dont_print){21}, (_dont_print){22}, (_dont_print){23}, (_dont_print){24}, (_dont_print){25}, (_dont_print){26}, (_dont_print){27}, (_dont_print){28}, (_dont_print){29}, (_dont_print){30}, (_dont_print){31}, (_dont_print){32}, (_dont_print){0}) //the (_dont_print){x}s are arbitrary placeholders that are known by type to be ignored
+
+//print (or don't!) name, separator, value, second separator
+//since _print_unit is an expression, albeit void, we can use a comma operator expression list to keep things tidy!
+#define _labelled_print_unit(unit) _Generic((unit), \
+  _dont_print: _print_unit(unit), /* this passes along the _dont_print to be merely _print_dont_printed */\
+  default: ( _print_unit(#unit), _print_unit(": "), _print_unit(unit), _print_unit(" ") ) \
+)
+
+//copied and modified from above
+#define _labelled_print_each(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _boundary_sentinel, ...) do{ /*the ol' do-while(0) trick*/ _labelled_print_unit(_1); _labelled_print_unit(_2); _labelled_print_unit(_3); _labelled_print_unit(_4); _labelled_print_unit(_5); _labelled_print_unit(_6); _labelled_print_unit(_7); _labelled_print_unit(_8); _labelled_print_unit(_9); _labelled_print_unit(_10); _labelled_print_unit(_11); _labelled_print_unit(_12); _labelled_print_unit(_13); _labelled_print_unit(_14); _labelled_print_unit(_15); _labelled_print_unit(_16); _labelled_print_unit(_17); _labelled_print_unit(_18); _labelled_print_unit(_19); _labelled_print_unit(_20); _labelled_print_unit(_21); _labelled_print_unit(_22); _labelled_print_unit(_23); _labelled_print_unit(_24); _labelled_print_unit(_25); _labelled_print_unit(_26); _labelled_print_unit(_27); _labelled_print_unit(_28); _labelled_print_unit(_29); _labelled_print_unit(_30); _labelled_print_unit(_31); _labelled_print_unit(_32); _Static_assert(_Generic((_boundary_sentinel), _dont_print: 1, default: 0 ), "Too many arguments supplied to print. Please do not do that, or simply edit the source code to expand the function."); } while(0)
+
+#define labelled_print(...) _labelled_print_each(__VA_ARGS__, (_dont_print){1}, (_dont_print){2}, (_dont_print){3}, (_dont_print){4}, (_dont_print){5}, (_dont_print){6}, (_dont_print){7}, (_dont_print){8}, (_dont_print){9}, (_dont_print){10}, (_dont_print){11}, (_dont_print){12}, (_dont_print){13}, (_dont_print){14}, (_dont_print){15}, (_dont_print){16}, (_dont_print){17}, (_dont_print){18}, (_dont_print){19}, (_dont_print){20}, (_dont_print){21}, (_dont_print){22}, (_dont_print){23}, (_dont_print){24}, (_dont_print){25}, (_dont_print){26}, (_dont_print){27}, (_dont_print){28}, (_dont_print){29}, (_dont_print){30}, (_dont_print){31}, (_dont_print){32}, (_dont_print){0})
+
+
 
 #endif
