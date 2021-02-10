@@ -32,7 +32,7 @@ int main(void) {
   _print_unit("\n");
   _print_unit(-1293092034523452345);
   _print_unit("\n");
-  _print_unit( ((int[]){2913870987, 3, 7}) ); //prints compound expression (in-line array literal) fine, though you have to parenthesize it and my GCC will no longer warn you that the first thing here is too big and will overflow
+  _print_unit( ((int[]){2913870987, 3, 7}) ); //prints compound expression (in-line array literal) fine, though you have to parenthesize it (due to how function macro arguments are parsed, I think) and my GCC will no longer warn you that the first thing here is too big and will overflow
   _print_unit( (void *) ((int[]){2913870987, 3, 7}) ); //casting to void * prints as pointer
   _print_unit("\n");
   _print_unit(-1);
