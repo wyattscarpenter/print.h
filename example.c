@@ -37,9 +37,13 @@ int main(void) {
   _print_unit("\n");
   _print_unit(-1);
   _print_unit("\n");
-/*  struct unknown_structure {int a; int b; int c;};
+  print( ( (_printable_bytes){3, &(char[]){1,2,3}} ), "(should be 010203) Don't ever manually construct _printable_byte structs, by the way. This is just for testing some internals.\n" );
+  print(printable_bytes("example")," should be 6578616D706C6500\n");
+  struct unknown_structure {int a; int b; int c;};
   struct unknown_structure us = {};
-  _print_unit( us ) */ //errors
+  struct unknown_structure uss = {1, 2, 3};
+  print("Let's print a struct pointer ", (void*)&us, " and now a struct (empty): ", printable_struct(us), " and now a nonempty struct: ", printable_struct(uss), ". These results will vary based on whether your compiler implements __builtin_dump_struct\n");
+  //_print_unit( us )  //errors
   _print_unit(&anint); //taking the address will print a pointer, naturally.
   print("\nLet's print some arrays! ", ((int[]){}), ((int[]){1}), ((int[]){1, 2}), ((int[]){1, 2, 3}), ((int[]){1, 2, 3, 4})); //as you can see, if sizeof the array = sizeof pointer, we must print a pointer.
   int twod[][3] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
