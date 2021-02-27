@@ -29,24 +29,35 @@ typedef struct {int size; void* data;} _printable_bytes;
 
 #define printable_bytes(a) ((_printable_bytes){sizeof(a), &a}) //note that it would be absolutely fine to have this function macro and a datatype share the same name, they would not conflict. But, this is exposed to the user so we don't start it with an underscore.
 #ifndef __has_builtin //check for builtins from compilers that implement this scheme (ie, gcc or clang)
- #define __has_builtin(x) 0  // Compatibility compilers that don't implement this macro
+ #define __has_builtin(x) 0  // compatibility for compilers that don't implement this macro
 #endif
 
 #if __has_builtin(__builtin_dump_struct)
-  #define printable_struct(s) (__builtin_dump_struct(&(s), &printf),"") //supress printing of return value using comma operator.
+  #define printable_struct(s) (__builtin_dump_struct(&(s), &printf),"") //suppress printing of return value using comma operator.
 #else
   #define printable_struct(s) printable_bytes(s)
 #endif
 
+//These functions are all static so multiple definitions from multiple inclusions across multiple files isn't a problem.
+/*//Note: I've been told a cool way to deal with a particular problem goes like:
+#ifndef _print_export_status
+#define _print_export_status static
+#endif
+_print_export_status void _print_char(void); //etc
+//and you want the functions not to be static you can put
+#define _print_export_status //just define it as nothing so _print_export_status produces no annotation
+//somewhere to get that behavior. This is very slick, and seems better than than the stb.h method ( as used in https://github.com/nothings/stb/blob/master/stb.h ) as that requires the library user to #define STB_DEFINE somewhere for it to work at all, instead of just for the special behavior. However, I don't ACTUALLY know what problem this is supposed to solve, so I'm not going to implement it until someone actually requests it.
+*/
+
 //We rely on type promotion rules I frankly don't really understand.
 //could replace printf. But this way the code is more likely to be correct. Also, is it already optimized out by the compiler?
-void _print_char(char c, int size){printf("%c", c);}
-void _print_int(long long int i, int size){printf("%lld", i);}
-void _print_uint(unsigned long long int u, int size){printf("%llu", u);}
-void _print_float(long double f, int size){printf("%LG", f);} //L: Long float, G: automatically chooses whether to use scientific notation
-void _print_string(char *s, int size){printf("%s", s);}
-void _print_pointer(void *p, int size){printf("%p", p);}
-void _print_int_pointer(int *p, int size){
+static void _print_char(char c, int size){printf("%c", c);}
+static void _print_int(long long int i, int size){printf("%lld", i);}
+static void _print_uint(unsigned long long int u, int size){printf("%llu", u);}
+static void _print_float(long double f, int size){printf("%LG", f);} //L: Long float, G: automatically chooses whether to use scientific notation
+static void _print_string(char *s, int size){printf("%s", s);}
+static void _print_pointer(void *p, int size){printf("%p", p);}
+static void _print_int_pointer(int *p, int size){
   if(size == sizeof(p)){
     _print_pointer(p, sizeof(p));
   } else {
@@ -60,15 +71,15 @@ void _print_int_pointer(int *p, int size){
     printf("}");
   }
 }
-void _print_2d_int_pointer(void *p, int size){_print_int_pointer((int*)p, size);} //ironic that I have to take a void pointer here to erase the type info that I can't use. So close, yet so far.
+static void _print_2d_int_pointer(void *p, int size){_print_int_pointer((int*)p, size);} //ironic that I have to take a void pointer here to erase the type info that I can't use. So close, yet so far.
 //An alternative would be making n of these functions (dispatching to int (*)[n] in the _Generic), which isn't very good.
-void _print_printable_bytes(_printable_bytes a, int size){//note that the size parameter will always be sizeof int + sizeof void*, so it's ignored for our purposes here
+static void _print_printable_bytes(_printable_bytes a, int size){//note that the size parameter will always be sizeof int + sizeof void*, so it's ignored for our purposes here
     for(int i = 0; i < a.size; i++){
         printf("%02X", ((char*)a.data)[i]);
     }
 }
-void _print_dont_print(_dont_print dont, int size){} //could also use ... instead of int size if we need to throw out a variable number of arguments in the future
-//void _print_custom(custom_type c){putchar(c.nothing);} //works fine
+static void _print_dont_print(_dont_print dont, int size){} //could also use ... instead of int size if we need to throw out a variable number of arguments in the future
+//static void _print_custom(custom_type c){putchar(c.nothing);} //works fine
 
 #define _print_unit(unit) _Generic( (unit), \
   char: _print_char, \

@@ -1,4 +1,7 @@
 #include "print.h"
+#include "example2.c"
+#include "example3.h"
+#include "example3.c" //to make it easy to run this example file using `cc example.c && ./a.out` I've #included this .c file here, but to demo actually using print.h in multiple files through headers, comment out this line and run `cc example.c example3.c && ./a.out` or `cc -c example3.o && cc example.c example3.h example3.o && ./a.out`
 
 int main(void) {
   char a = 'a';
@@ -59,5 +62,7 @@ int main(void) {
   int i = 0;
   print("h");
   print("Hello friends. I have not tested thoroughly. I only tested ", 42, " cases.\nI think you will agree this is not enough. ", i++, " ", i, " ", ' ', (char)' ', (void *)2913870987, " ", 0xadae248b, " ", (void *)0, -16, " ", 1234.5, " ", 23948750293485702.0, "\n");
-  //return print("bye"); //this is not allowed, print gives no return value, and the error message is currently mysterious
+  example2_function();
+  example3_function();
+  //return print("bye"); //this is not allowed, print gives no return value. The error message this will give you is mysterious.
 }
