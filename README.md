@@ -32,3 +32,11 @@ The "header" file currently includes implementations.
 The header file currently #includes stdio.h, so don't bother double-including stdio.h.
 
 I release this code into the public domain under CC0.
+
+I have written blogposts about making this project on my blog:
+
+https://wyattscarpenter.github.io/blog/print.txt
+
+https://wyattscarpenter.github.io/blog/print_2_c_array_folly.txt
+
+https://wyattscarpenter.github.io/blog/print_3_structs.txt
